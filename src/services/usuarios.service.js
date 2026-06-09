@@ -22,3 +22,13 @@ export async function registerUsuariosDB(nombre, dni, id_rol) {
         throw error;
     }
 }
+
+export async function getUsuariosByDni(dni) {
+    try {
+        const { rows } = await pool.query('SELECT * FROM usuarios WHERE dni = $1', [dni]);
+        console.log(rows);
+        return rows[0];
+    }catch (error) {
+        throw error;
+    }
+}
