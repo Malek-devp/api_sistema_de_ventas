@@ -13,7 +13,7 @@ const router = Router();
 
 router.get('/', getUsuarios);
 router.post('/register', validatorDataUser, registerUsuarios);
-router.post('/login', validatorLoginUser, authMiddleware, adminMiddleware ,loginUsuarios);
+router.post('/login', validatorLoginUser,loginUsuarios);
 
 
 export default router;

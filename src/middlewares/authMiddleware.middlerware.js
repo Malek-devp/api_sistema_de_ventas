@@ -1,4 +1,4 @@
-import { verify } from 'jsonwebtoken'
+import jwt from 'jsonwebtoken'
 
 export function authMiddleware(req, res, next) {
     try {
@@ -10,7 +10,7 @@ export function authMiddleware(req, res, next) {
             })
         }
 
-        const decode = verify(
+        const decode = jwt.verify(
             token,
             process.env.JWT_SECRET
         )

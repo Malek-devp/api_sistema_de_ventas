@@ -4,28 +4,28 @@ import { serialize } from 'cookie'
 import { getUsuariosDB, registerUsuariosDB, getUsuariosByDni } from '../services/usuarios.service.js';
 
 
-export async function getUsuarios(req, res) {
+export async function getUsuarios(req, res, next) {
     try {
 
         const result = await getUsuariosDB();
         res.json(result);
 
     } catch (error) {
-        res.status(500).json({ error: 'Error al obtener los usuarios' });
+        next(error)
     }
 }
 
-export async function registerUsuarios(req, res) {
+export async function registerUsuarios(req, res, next) {
     try {
         const { nombre, dni, id_rol } = req.body;
         const result = await registerUsuariosDB(nombre, dni, id_rol);
         res.status(201).json(result);
     } catch (error) {
-        res.status(500).json({ error: 'Error al registrar el usuario' });
+        next(error)
     }
 }
 
-export async function loginUsuarios(req, res) {
+export async function loginUsuarios(req, res,  next) {
     try {
         const { dni } = req.body;
         const usuarios = await getUsuariosByDni(dni);
@@ -48,6 +48,6 @@ export async function loginUsuarios(req, res) {
             res.setHeader('Set-Cookie', serializedToken).json({ message: 'Inicio de sesión exitoso' });
 
     } catch (error) {
-        res.status(500).json({ error: 'Error al iniciar sesión' });
+        neext(error)
     }
 }
