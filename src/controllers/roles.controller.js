@@ -1,4 +1,3 @@
-import jwt from 'jsonwebtoken';
 import cookieParser from 'cookie-parser';
 
 import { getRolesDB, postRolesDB } from '../services/roles.service.js';

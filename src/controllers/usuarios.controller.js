@@ -29,6 +29,7 @@ export async function loginUsuarios(req, res, next) {
     try {
         const { dni } = req.body;
         const usuarios = await getUsuariosByDni(dni);
+        
         if (!usuarios) {
             return res.status(401).json({ error: 'Credenciales inválidas' });
         }
@@ -48,7 +49,7 @@ export async function loginUsuarios(req, res, next) {
             'token',
             token,
             {
-                httpOnly: true,
+                httpOnly: true, 
                 sameSite: 'lax',
                 path: '/',
                 maxAge: 3600

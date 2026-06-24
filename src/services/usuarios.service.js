@@ -5,7 +5,6 @@ export async function getUsuariosDB(){
     try {
         const data = await pool.query('SELECT * FROM usuarios');
         return data.rows;
-
     } catch (error) {
         throw error;
     }

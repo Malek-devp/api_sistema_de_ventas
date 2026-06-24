@@ -9,11 +9,11 @@ import { validatorLoginUser } from '../middlewares/validatorLoginUser.middleware
 import { authMiddleware } from '../middlewares/authMiddleware.middlerware.js'
 import { adminMiddleware } from '../middlewares/adminMiddleware.js'
 
-const router = Router();
+const router = Router(); 
 
 router.get('/', getUsuarios);
 router.post('/register', validatorDataUser, registerUsuarios);
 router.post('/login', validatorLoginUser, loginUsuarios);
 router.get('/dashboard', authMiddleware, adminMiddleware, me)
 
-export default router;
+export default router; 

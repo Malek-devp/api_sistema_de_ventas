@@ -8,20 +8,22 @@ dotenv.config({ path: './src/.env' });
 
 import usuariosRoutes from './routes/usuarios.routes.js';
 import rolesRoutes from './routes/roles.routes.js';
+import productosRoutes from './routes/productos.routes.js';
 
 const app = express();
 
 app.use(cors({
     origin: 'http://localhost:5173',
     credentials: true
-}))
+})); // permitir que el frontend acceda a la API
 
 app.use(morgan('dev'));
-app.use(cookieParser());
+app.use(cookieParser()); // para manejar las cookies
 app.use(express.json());
 
-app.use('/usuarios', usuariosRoutes);
-app.use('/roles', rolesRoutes);
+app.use('/usuarios', usuariosRoutes); // rutas de usuarios
+app.use('/roles', rolesRoutes); // rutas de roles
+app.use('/productos', productosRoutes); // rutas de productos
 
 // 3. Middleware para capturar rutas no encontradas (404)
 app.use((req, res, next) => {
