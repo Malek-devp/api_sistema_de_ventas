@@ -17,3 +17,22 @@ export async function postRolesDB(cargo) {
         throw new Error('Error al crear el rol');
     }
 }
+
+// FIX: agregar endpoints faltantes
+export async function putRolesDB(id, cargo) {
+    try {
+        const result = await pool.query('UPDATE roles SET cargo=$1 WHERE id=$2 RETURNING *', [cargo, id]);
+        return result.rows[0];
+    } catch (error) {
+        throw new Error('Error al actualizar el rol');
+    }
+}
+
+export async function deleteRolesDB(id) {
+    try {
+        const result = await pool.query('DELETE FROM roles WHERE id=$1 RETURNING *', [id]);
+        return result.rows[0];
+    } catch (error) {
+        throw new Error('Error al eliminar el rol');
+    }
+}

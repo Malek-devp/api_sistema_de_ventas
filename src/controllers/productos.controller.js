@@ -1,4 +1,4 @@
-import { getProductosDB, postProductosDB, putProductosDB, deleteProductosDB } from '../services/produstos.service.js';
+import { getProductosDB, postProductosDB, putProductosDB, deleteProductosDB } from '../services/productos.service.js'; // FIX: typo en nombre del archivo
 
 export async function getProductos(req, res, next) {
     try {

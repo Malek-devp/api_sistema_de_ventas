@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { authMiddleware } from '../middlewares/authMiddleware.middlerware.js'
+import { authMiddleware } from '../middlewares/authMiddleware.js' // FIX: typo en nombre del archivo
 import { adminMiddleware } from '../middlewares/adminMiddleware.js'
 
 //controllers

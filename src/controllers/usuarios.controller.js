@@ -1,7 +1,7 @@
 import jwt from 'jsonwebtoken';
 import { serialize } from 'cookie'
 
-import { getUsuariosDB, registerUsuariosDB, getUsuariosByDni } from '../services/usuarios.service.js';
+import { getUsuariosDB, registerUsuariosDB, getUsuariosByDni, putUsuariosDB, deleteUsuariosDB } from '../services/usuarios.service.js'; // FIX: agregar put/delete
 
 
 export async function getUsuarios(req, res, next) {
@@ -72,5 +72,42 @@ export async function me(req, res, next) {
         return res.json(req.user);
     } catch (error) {
         next(error)
+    }
+}
+
+// FIX: agregar logout que borra la cookie
+export async function logoutUsuarios(req, res, next) {
+    try {
+        const serializedToken = serialize('token', '', {
+            httpOnly: true,
+            sameSite: 'lax',
+            path: '/',
+            maxAge: 0
+        });
+        res.setHeader('Set-Cookie', serializedToken).json({ message: 'Sesión cerrada exitosamente' });
+    } catch (error) {
+        next(error);
+    }
+}
+
+// FIX: agregar endpoints faltantes
+export async function putUsuarios(req, res, next) {
+    try {
+        const {id} = req.params;
+        const {nombre, dni, id_rol} = req.body;
+        const result = await putUsuariosDB(id, nombre, dni, id_rol);
+        res.json(result);
+    } catch (error) {
+        next(error);
+    }
+}
+
+export async function deleteUsuarios(req, res, next) {
+    try {
+        const {id} = req.params;
+        const result = await deleteUsuariosDB(id);
+        res.json(result);
+    } catch (error) {
+        next(error);
     }
 }

@@ -8,6 +8,6 @@ export function adminMiddleware(req, res, next) {
         }
         next()
     } catch (error) {
-
+        next(error) // FIX: catch vacío que tragaba errores, ahora propaga al manejador global
     }
 }
