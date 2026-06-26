@@ -10,27 +10,56 @@ export const getDetalleVentasDB = async () => {
 }
 
 export const postDetalleVentasDB = async (venta_id, producto_id, precio_unitario, cantidad) => {
+
+    const client = await pool.connect(); // abrimos una conección unica
+
     try {
-        const result = await pool.query('INSERT INTO detalle_ventas (venta_id, producto_id, precio_unitario, cantidad) VALUES ($1, $2, $3, $4) RETURNING *', [venta_id, producto_id, precio_unitario, cantidad])
-        return result.rows[0]
+        await client.query('BEGIN'); // Iniciamos la transacción
+
+        //Descontamos el stock en la tabla productos
+        const queryStock = `
+        UPDATE productos
+        SET stock = stock - $1
+        WHERE id = $2
+        RETURNING stock;`// usamos RETURNING stock para verificar si el inventario quedó en negativo
+
+        const resStock = await client.query(queryStock, [cantidad, producto_id]);
+
+        //validación por seguridad por si no hay suficiente stock
+        if(resStock.rows[0].stock < 0){
+            throw new Error(`Stock insuficiente para el producto`);
+        }
+
+        //insertar en detalle de ventas
+        const queryDetalle = `
+        INSERT INTO detalle_ventas (venta_id, producto_id, precio_unitario, cantidad)
+        VALUES ($1, $2, $3, $4);`;
+
+        await client.query(queryDetalle, [venta_id, producto_id, precio_unitario, cantidad])
+
+        // si todo salió bien, confirmamos los cambios en la base de datos
+        await client.query('COMMIT');
+        res.status(201).json({
+            ok:true,
+            msg: "venta registrada e inventario actualizado"
+        })
+
     } catch (error) {
-        throw error; // FIX: throw directo, no new Error({message:error}) que produce "[object Object]"
+        await client.query('ROOLBACK');
+        res.status(400).json({
+            ok:false,
+            msg:error.message
+        })
+    }finally{
+        //simpre liberar el cliente para que vuelva al pool de conexiones
+        client.release();
     }
 }
-
+ 
 // FIX: agregar endpoints faltantes
 export const putDetalleVentasDB = async (id, venta_id, producto_id, precio_unitario, cantidad) => {
     try {
         const result = await pool.query('UPDATE detalle_ventas SET venta_id=$1, producto_id=$2, precio_unitario=$3, cantidad=$4 WHERE id=$5 RETURNING *', [venta_id, producto_id, precio_unitario, cantidad, id])
-        return result.rows[0]
-    } catch (error) {
-        throw error;
-    }
-}
-
-export const deleteDetalleVentasDB = async (id) => {
-    try {
-        const result = await pool.query('DELETE FROM detalle_ventas WHERE id=$1 RETURNING *', [id])
         return result.rows[0]
     } catch (error) {
         throw error;

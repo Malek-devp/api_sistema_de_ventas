@@ -21,4 +21,4 @@ router.get('/dashboard', authMiddleware, adminMiddleware, me)
 router.put('/:id', authMiddleware, adminMiddleware, putUsuarios);
 router.delete('/:id', authMiddleware, adminMiddleware, deleteUsuarios);
 
-export default router; 
+export default router;  

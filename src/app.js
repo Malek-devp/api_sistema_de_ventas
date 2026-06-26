@@ -30,7 +30,7 @@ app.use('/ventas', ventasRoutes)
 app.use('/detalle', detalleVentasRoutes)
 
 // 3. Middleware para capturar rutas no encontradas (404)
-app.use((req, res, next) => {
+app.use((req, res) => {
     res.status(404).json({
         status: 'error',
         message: `No se encontró la ruta: ${req.originalUrl}`
