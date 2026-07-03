@@ -11,8 +11,8 @@ export async function getVentas(req, res, next) {
 
 export async function postVentas(req, res, next) {
     try {
-        const {id_usuario, fecha, subtotal, igv, total} = req.body;
-        const result = await postVentasDB(id_usuario, fecha, subtotal, igv, total);
+        const {id_usuario} = req.body;
+        const result = await postVentasDB(id_usuario);
         res.json(result);
     } catch (error) {
         next(error);

@@ -9,9 +9,9 @@ export async function getVentasDB() {
     }
 }
 
-export async function postVentasDB(id_usuario, fecha, subtotal, igv, total) {
+export async function postVentasDB(id_usuario) {
     try {
-        const result = await pool.query('INSERT INTO ventas(id_usuario, fecha, subtotal, igv, total) VALUES($1, $2, $3, $4, $5) RETURNING *', [id_usuario, fecha, subtotal, igv, total]);
+        const result = await pool.query('INSERT INTO ventas(id_usuario) VALUES($1) RETURNING *', [id_usuario]);
         return result.rows[0];
     } catch (error) {
         throw new Error('Error al crear la venta');

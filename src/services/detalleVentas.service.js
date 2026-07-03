@@ -51,7 +51,7 @@ export const postDetalleVentasDB = async (venta_id, producto_id, precio_unitario
             throw new Error(`Error al obtener el subtotal de la venta`);
         }
 
-        const insertSubtotal = await client.query('UPDATE ventas SET subtotal = $1 WHERE id = $2',[getDetalle.rows[0].subtotal, venta_id])
+        await client.query('UPDATE ventas SET subtotal = $1 WHERE id = $2',[getDetalle.rows[0].subtotal, venta_id])
 
         // si todo salió bien, confirmamos los cambios en la base de datos
         await client.query('COMMIT');
