@@ -1,5 +1,5 @@
-
-export function validatorDataUser(req, res, next) {
+import type { Request, Response, NextFunction } from "express";
+export function validatorDataUser(req: Request, res: Response, next: NextFunction): void | Response {
     const {nombre, dni, id_rol} = req.body;    
     if (!nombre || !dni || !id_rol) {
         return res.status(400).json({ error: 'Faltan datos requeridos' });

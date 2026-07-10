@@ -5,11 +5,11 @@ import { adminMiddleware } from '../middlewares/adminMiddleware.js'
 //controllers
 import { getProductos, postProductos, putProductos, deleteProductos } from '../controllers/productos.controller.js';
 
-const router = Router();
+const router: Router = Router();
 
 router.get('/', authMiddleware, getProductos); // obtener todos los productos
 router.post('/register', authMiddleware, adminMiddleware, postProductos); // crear un nuevo producto
 router.put('/:id', authMiddleware, adminMiddleware, putProductos); // actualizar un producto
 router.delete('/:id', authMiddleware, adminMiddleware, deleteProductos); // eliminar un producto
 
-export default router; 
+export default router;   

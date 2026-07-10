@@ -1,5 +1,5 @@
 import pool from '../database/db.js';
-import type {Producto} from '../interface/productos.interface.js'
+import type {Producto,  CrearProducto} from '../interface/productos.interface.js'
 
 export async function getProductosDB():Promise<Producto[]> {
     try {
@@ -10,16 +10,17 @@ export async function getProductosDB():Promise<Producto[]> {
     }
 }
 
-export async function postProductosDB(marca:string, precio:number, stock:number, id_categoria:number) {
+export async function postProductosDB(producto:CrearProducto):Promise<Producto> {
     try {
-        const result = await pool.query('INSERT INTO productos(marca, precio, stock, id_categoria) VALUES($1, $2, $3, $4) RETURNING *', [marca, precio, stock, id_categoria]);
+        const result = await pool.query('INSERT INTO productos(marca, precio, stock, id_categoria) VALUES($1, $2, $3, $4) RETURNING *', [producto.marca, producto.precio, producto.stock, producto.id_categoria]);
         return result.rows[0];
     } catch (error) {
         throw new Error('Error al crear el producto');
     }
-} 
+}  
 
-export async function putProductosDB(id:number, marca:string, precio:number, stock:number, id_categoria:number) {
+export async function putProductosDB(id:number, producto:CrearProducto):Promise<Producto> {
+    const {marca, precio, stock, id_categoria} = producto;
     try {
         const result = await pool.query('UPDATE productos SET marca = $1, precio = $2, stock = $3, id_categoria = $4 WHERE id = $5 RETURNING *', [marca, precio, stock, id_categoria, id]);
         return result.rows[0];
@@ -28,7 +29,7 @@ export async function putProductosDB(id:number, marca:string, precio:number, sto
     }
 }
 
-export async function deleteProductosDB(id:number) {
+export async function deleteProductosDB(id:number):Promise<Producto> {
     try {
         const result = await pool.query('DELETE FROM productos WHERE id = $1 RETURNING *', [id]);
         return result.rows[0];
