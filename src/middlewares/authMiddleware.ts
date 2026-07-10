@@ -1,5 +1,6 @@
 import jwt from 'jsonwebtoken'
 import type { Request, Response, NextFunction } from "express";
+import type { User } from "../types/express.js";
 export function authMiddleware(req: Request, res: Response, next: NextFunction): void | Response {
     try {
         const { token } = req.cookies
@@ -13,7 +14,7 @@ export function authMiddleware(req: Request, res: Response, next: NextFunction):
         const decode = jwt.verify(
             token,
             process.env.JWT_SECRET!
-        )
+        ) as User;
 
         req.user = decode;
 

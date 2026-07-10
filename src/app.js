@@ -8,7 +8,7 @@ dotenv.config({ path: './src/.env' });
 
 import usuariosRoutes from './routes/usuarios.routes.js';
 import rolesRoutes from './routes/roles.routes.js';
-import productosRoutes from './routes/productos.routes.js';
+import productosRoutes from './routes/productos.routes.ts';
 import ventasRoutes from './routes/ventas.routes.js'
 import detalleVentasRoutes from './routes/detalleVentas.routes.js'
 

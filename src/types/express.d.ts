@@ -1,6 +1,4 @@
-import { JwtPayload } from 'jsonwebtoken';
-
-interface User {
+export interface User {
   id: number;
   nombre: string;
   rol: number;
@@ -11,7 +9,7 @@ declare global {
   namespace Express {
     interface Request {
       // Usamos JwtPayload | string porque es lo que devuelve jwt.verify
-      user?: User | JwtPayload | string; 
+      user?: User; 
     }
   }
 }
