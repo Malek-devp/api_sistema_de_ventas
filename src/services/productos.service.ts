@@ -6,34 +6,35 @@ export async function getProductosDB():Promise<Producto[]> {
         const result = await pool.query('SELECT * FROM productos');
         return result.rows;
     } catch (error) {
-        throw new Error('Error al obtener los productos');
+        throw new Error(`Error al obtener los productos: ${error}`);
     }
 }
 
 export async function postProductosDB(producto:CrearProducto):Promise<Producto> {
     try {
-        const result = await pool.query('INSERT INTO productos(marca, precio, stock, id_categoria) VALUES($1, $2, $3, $4) RETURNING *', [producto.marca, producto.precio, producto.stock, producto.id_categoria]);
+        const {marca, precio, stock, id_categoria} = producto;
+        const result = await pool.query('INSERT INTO productos(marca, precio, stock, id_categoria) VALUES($1, $2, $3, $4) RETURNING *', [marca, precio, stock, id_categoria]);
         return result.rows[0];
     } catch (error) {
-        throw new Error('Error al crear el producto');
+        throw new Error(`Error al crear el producto: ${error}`);
     }
 }  
 
-export async function putProductosDB(id:number, producto:CrearProducto):Promise<Producto> {
-    const {marca, precio, stock, id_categoria} = producto;
+export async function putProductosDB(id:number, producto:CrearProducto):Promise<Producto | null> {
     try {
+        const {marca, precio, stock, id_categoria} = producto;
         const result = await pool.query('UPDATE productos SET marca = $1, precio = $2, stock = $3, id_categoria = $4 WHERE id = $5 RETURNING *', [marca, precio, stock, id_categoria, id]);
         return result.rows[0];
     } catch (error) {
-        throw new Error('Error al actualizar el producto');
+        throw new Error(`Error al actualizar el producto: ${error}`);
     }
 }
 
-export async function deleteProductosDB(id:number):Promise<Producto> {
+export async function deleteProductosDB(id:number):Promise<Producto | null> {
     try {
         const result = await pool.query('DELETE FROM productos WHERE id = $1 RETURNING *', [id]);
         return result.rows[0];
     } catch (error) {
-        throw new Error('Error al eliminar el producto');
+        throw new Error(`Error al eliminar el producto: ${error}`);
     }
 }

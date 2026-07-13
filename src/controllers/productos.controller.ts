@@ -28,17 +28,27 @@ export async function putProductos(req: Request, res: Response, next: NextFuncti
         const idParsing = parseId(id)
         const producto:CrearProducto = req.body;
         const result = await putProductosDB(idParsing, producto);
+        if(!result){
+            return res.status(400).json({
+                error: "Producto no encontrado"
+            })
+        }
         res.json(result);
     } catch (error) {
         next(error);
     }
 }
 
-export async function deleteProductos(req: Request, res: Response, next: NextFunction): Promise<void> {
+export async function deleteProductos(req: Request, res: Response, next: NextFunction): Promise<Response|void> {
     try {
         const id = req.params.id;
         const idParsing = parseId(id)
         const result = await deleteProductosDB(idParsing);
+        if(!result){
+            return res.status(400).json({
+                error: "Producto no encontrado"
+            })
+        }
         res.json(result);
     } catch (error) {
         next(error);
