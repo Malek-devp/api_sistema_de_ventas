@@ -3,7 +3,11 @@ import type {Producto,  CrearProducto} from '../interface/productos.interface.js
 
 export async function getProductosDB():Promise<Producto[]> {
     try {
-        const result = await pool.query('SELECT * FROM productos');
+        const result = await pool.query(
+            `SELECT p.*, c.nombre AS categoria_nombre
+             FROM productos p
+             INNER JOIN categorias c ON p.id_categoria = c.id`
+        );
         return result.rows;
     } catch (error) {
         throw new Error(`Error al obtener los productos: ${error}`);

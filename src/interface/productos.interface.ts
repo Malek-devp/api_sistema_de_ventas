@@ -4,6 +4,7 @@ export interface Producto{
     precio: number;
     stock: number;
     id_categoria: number;
+    categoria_nombre?: string;
 }
 
 export type CrearProducto = Omit<Producto, "id">;

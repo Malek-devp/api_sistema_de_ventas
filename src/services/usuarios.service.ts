@@ -3,7 +3,11 @@ import type {Usuario} from '../interface/usuario.interface.js'
 
 export async function getUsuariosDB():Promise<Usuario[]>{
     try {
-        const data = await pool.query('SELECT * FROM usuarios');
+        const data = await pool.query(
+            `SELECT u.*, r.cargo AS rol_cargo
+             FROM usuarios u
+             INNER JOIN roles r ON u.id_rol = r.id`
+        );
         return data.rows;
     } catch (error) {
         throw error;
@@ -24,7 +28,12 @@ export async function registerUsuariosDB(nombre:string, dni:string, id_rol: numb
 
 export async function getUsuariosByDni(dni: string):Promise<Usuario|null> {
     try {
-        const { rows } = await pool.query('SELECT * FROM usuarios WHERE dni = $1', [dni]);
+        const { rows } = await pool.query(
+            `SELECT u.*, r.cargo AS rol_cargo
+             FROM usuarios u
+             INNER JOIN roles r ON u.id_rol = r.id
+             WHERE u.dni = $1`, [dni]
+        );
         return rows[0] ?? null;
     }catch (error) {
         throw error;
@@ -34,7 +43,12 @@ export async function getUsuariosByDni(dni: string):Promise<Usuario|null> {
 // CORRECCIÓN: nueva función para buscar por id (la ruta usa :id, no dni)
 export async function getUsuariosById(id: number): Promise<Usuario | null> {
     try {
-        const { rows } = await pool.query('SELECT * FROM usuarios WHERE id = $1', [id]);
+        const { rows } = await pool.query(
+            `SELECT u.*, r.cargo AS rol_cargo
+             FROM usuarios u
+             INNER JOIN roles r ON u.id_rol = r.id
+             WHERE u.id = $1`, [id]
+        );
         return rows[0] ?? null;
     } catch (error) {
         throw error;

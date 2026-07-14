@@ -3,7 +3,11 @@ import type { Ventas, AnularVentaResponse } from '../interface/venta.interface.j
 
 export async function getVentasDB(): Promise<Ventas[]> {
     try {
-        const result = await pool.query('SELECT * FROM ventas');
+        const result = await pool.query(
+            `SELECT v.*, u.nombre AS usuario_nombre
+             FROM ventas v
+             INNER JOIN usuarios u ON v.id_usuario = u.id`
+        );
         return result.rows;
     } catch (error) {
         throw new Error('Error al obtener las ventas');

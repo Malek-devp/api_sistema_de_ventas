@@ -5,6 +5,7 @@ export interface DetalleVentas {
     precio_unitario: number,
     cantidad: number,
     subtotal: number,
+    producto_marca?: string
 }
 
 export type crearDetalle = Omit<DetalleVentas, 'id' | 'subtotal'> 

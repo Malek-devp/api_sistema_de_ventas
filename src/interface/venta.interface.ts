@@ -7,7 +7,8 @@ export interface Ventas {
     estado: Estado,
     subtotal: number,
     igv: number,
-    total: number
+    total: number,
+    usuario_nombre?: string
 }
 
 export type CrearVentaDto = Pick<Ventas, 'id_usuario'>;

@@ -4,7 +4,11 @@ import type {DetalleVentas, detalleResponse} from '../interface/detalleVenta.int
 
 export const getDetalleVentasDB = async ():Promise<DetalleVentas[]> => {
     try {
-        const result = await pool.query('SELECT * FROM detalle_ventas')
+        const result = await pool.query(
+            `SELECT dv.*, p.marca AS producto_marca
+             FROM detalle_ventas dv
+             INNER JOIN productos p ON dv.producto_id = p.id`
+        )
         return result.rows
     } catch (error) {
         throw error; // FIX: throw directo, no new Error({message:error}) que produce "[object Object]"
