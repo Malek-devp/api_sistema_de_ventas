@@ -18,9 +18,9 @@ export function NuevaVentaPage() {
   const [form, setForm] = useState({
     id_usuario: '',
     fecha: new Date().toISOString().slice(0, 16),
-    subtotal: '',
-    igv: '',
-    total: '',
+    subtotal: '0',
+    igv: '0.18',
+    total: '0',
   })
 
   const [detalles, setDetalles] = useState([
@@ -102,7 +102,7 @@ export function NuevaVentaPage() {
           <button onClick={() => router.navigate({ to: '/ventas' })} className="px-4 py-2 bg-accent text-white rounded-lg hover:bg-accent-hover transition text-sm cursor-pointer">
             Ir a Ventas
           </button>
-          <button onClick={() => { setStep('form'); setDetalles([{ producto_id: '', precio_unitario: '', cantidad: '1' }]); setForm({ id_usuario: '', fecha: new Date().toISOString().slice(0, 16), subtotal: '', igv: '', total: '' }) }} className="px-4 py-2 bg-surface border border-border text-primary-text rounded-lg hover:bg-surface-hover transition text-sm cursor-pointer">
+          <button onClick={() => { setStep('form'); setDetalles([{ producto_id: '', precio_unitario: '', cantidad: '1' }]); setForm({ id_usuario: '', fecha: new Date().toISOString().slice(0, 16), subtotal: '0', igv: '0.18', total: '0' }) }} className="px-4 py-2 bg-surface border border-border text-primary-text rounded-lg hover:bg-surface-hover transition text-sm cursor-pointer">
             Nueva Venta
           </button>
         </div>
