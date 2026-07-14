@@ -49,7 +49,7 @@ export function ProductosPage() {
     { key: 'marca', label: 'Producto' },
     { key: 'precio', label: 'Precio', render: (val) => `S/ ${Number(val).toFixed(2)}` },
     { key: 'stock', label: 'Stock', render: (val) => <span className={`px-2 py-0.5 text-xs rounded-full ${Number(val) > 0 ? 'bg-emerald-500/10 text-emerald-400' : 'bg-danger/10 text-danger'}`}>{val}</span> },
-    { key: 'id_categoria', label: 'Categoría', render: (val) => <span className="text-secondary-text">{val || '—'}</span> },
+    { key: 'categoria_nombre', label: 'Categoría', render: (val) => <span className="text-secondary-text">{val || '—'}</span> },
   ]
 
   return (

@@ -59,7 +59,7 @@ export function VentasPage() {
 
   const columns = [
     { key: 'id', label: 'N°', className: 'w-12 text-muted' },
-    { key: 'id_usuario', label: 'Usuario', render: (val) => <span className="text-secondary-text">ID: {val}</span> },
+    { key: 'usuario_nombre', label: 'Usuario', render: (val) => <span className="text-secondary-text">{val || '—'}</span> },
     { key: 'fecha', label: 'Fecha', render: (val) => formatFecha(val) },
     { key: 'subtotal', label: 'Subtotal', render: (val) => `S/ ${Number(val).toFixed(2)}` },
     { key: 'igv', label: 'IGV', render: (val) => `S/ ${Number(val).toFixed(2)}` },
@@ -92,7 +92,7 @@ export function VentasPage() {
         ) : (
           <div className="space-y-4">
             <div className="grid grid-cols-2 gap-4 text-sm">
-              <div><span className="text-secondary-text">Usuario:</span> <span className="text-primary-text ml-1">ID {detalleVenta?.id_usuario}</span></div>
+              <div><span className="text-secondary-text">Usuario:</span> <span className="text-primary-text ml-1">{detalleVenta?.usuario_nombre || `ID ${detalleVenta?.id_usuario}`}</span></div>
               <div><span className="text-secondary-text">Fecha:</span> <span className="text-primary-text ml-1">{formatFecha(detalleVenta?.fecha)}</span></div>
               <div><span className="text-secondary-text">Subtotal:</span> <span className="text-primary-text ml-1">S/ {Number(detalleVenta?.subtotal || 0).toFixed(2)}</span></div>
               <div><span className="text-secondary-text">IGV:</span> <span className="text-primary-text ml-1">S/ {Number(detalleVenta?.igv || 0).toFixed(2)}</span></div>
@@ -117,7 +117,7 @@ export function VentasPage() {
                     <tbody>
                       {detalleItems.map((item, i) => (
                         <tr key={item.id || i} className="border-b border-border/50">
-                          <td className="py-2 px-3 text-primary-text">{getProductoName(item.producto_id)}</td>
+                          <td className="py-2 px-3 text-primary-text">{item.producto_marca || getProductoName(item.producto_id)}</td>
                           <td className="py-2 px-3 text-right text-primary-text">S/ {Number(item.precio_unitario).toFixed(2)}</td>
                           <td className="py-2 px-3 text-right text-primary-text">{item.cantidad}</td>
                           <td className="py-2 px-3 text-right text-primary-text font-medium">S/ {(Number(item.precio_unitario) * Number(item.cantidad)).toFixed(2)}</td>

@@ -67,13 +67,7 @@ export function UsuariosPage() {
     { key: 'id', label: 'ID', className: 'w-12 text-muted' },
     { key: 'nombre', label: 'Nombre' },
     { key: 'dni', label: 'DNI' },
-    {
-      key: 'id_rol', label: 'Rol',
-      render: (val) => {
-        const r = roles.find((rl) => rl.id === val)
-        return <span className="px-2 py-0.5 text-xs rounded-full bg-accent/10 text-accent">{r?.cargo || val}</span>
-      },
-    },
+    { key: 'rol_cargo', label: 'Rol', render: (val) => <span className="px-2 py-0.5 text-xs rounded-full bg-accent/10 text-accent">{val || '—'}</span> },
   ]
 
   return (
