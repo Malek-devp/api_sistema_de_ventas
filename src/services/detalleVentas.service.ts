@@ -51,11 +51,7 @@ export const postDetalleVentasDB = async (venta_id:number, producto_id:number, p
 
         await client.query(queryDetalle, [venta_id, producto_id, precio_unitario, cantidad])
 
-        const getDetalle = await client.query('SELECT subtotal FROM detalle_ventas WHERE venta_id = $1', [venta_id])
-
-        if(getDetalle.rows.length === 0){
-            throw new Error(`Error al obtener el subtotal de la venta`);
-        }
+        const getDetalle = await client.query('SELECT COALESCE(SUM(subtotal), 0) as subtotal FROM detalle_ventas WHERE venta_id = $1', [venta_id])
 
         await client.query('UPDATE ventas SET subtotal = $1 WHERE id = $2',[getDetalle.rows[0].subtotal, venta_id])
 
