@@ -65,8 +65,8 @@ export async function putVentasDB(id: number): Promise<AnularVentaResponse> {
     } catch (error) {
         // Si algo falla, deshacemos todo (¡el stock no se devuelve dos veces!)
         await client.query('ROLLBACK');
-        console.error('Error al anular venta (ROLLBACK):', error.message);
-        return ({ ok: false, msg: error.message });
+        const message = error instanceof Error ? error.message : 'Error desconocido'
+        return ({ ok: false, msg: message });
 
     } finally {
         client.release();
