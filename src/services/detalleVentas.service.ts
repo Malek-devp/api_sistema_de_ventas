@@ -1,6 +1,8 @@
 import pool from "../database/db.js";
 
-export const getDetalleVentasDB = async () => {
+import type {DetalleVentas, detalleResponse} from '../interface/detalleVenta.interface.js'
+
+export const getDetalleVentasDB = async ():Promise<DetalleVentas[]> => {
     try {
         const result = await pool.query('SELECT * FROM detalle_ventas')
         return result.rows
@@ -9,10 +11,10 @@ export const getDetalleVentasDB = async () => {
     }
 }
 
-export const postDetalleVentasDB = async (venta_id, producto_id, precio_unitario, cantidad) => {
+export const postDetalleVentasDB = async (venta_id:number, producto_id:number, precio_unitario:number, cantidad:number):Promise<detalleResponse> => {
 
     const client = await pool.connect(); // abrimos una conección unica
-
+ 
     try {
         await client.query('BEGIN'); // Iniciamos la transacción
 
@@ -62,9 +64,10 @@ export const postDetalleVentasDB = async (venta_id, producto_id, precio_unitario
 
     } catch (error) {
         await client.query('ROLLBACK');
+        const message = error instanceof Error ? error.message : 'Error desconocido'
         return({
             ok:false,
-            msg:error.message
+            msg:message
         })
     }finally{
         //simpre liberar el cliente para que vuelva al pool de conexiones
@@ -73,9 +76,9 @@ export const postDetalleVentasDB = async (venta_id, producto_id, precio_unitario
 }
  
 // FIX: agregar endpoints faltantes
-export const putDetalleVentasDB = async (id, venta_id, producto_id, precio_unitario, cantidad) => {
+export const putDetalleVentasDB = async (id:number, venta_id:number, producto_id:number, precio_unitario:number, cantidad:number):Promise<DetalleVentas> => {
     try {
-        const result = await pool.query('UPDATE detalle_ventas SET venta_id=$1, producto_id=$2, precio_unitario=$3, cantidad=$4 WHERE id=$5 RETURNING *', [venta_id, producto_id, precio_unitario, cantidad, estado, id])
+        const result = await pool.query('UPDATE detalle_ventas SET venta_id=$1, producto_id=$2, precio_unitario=$3, cantidad=$4 WHERE id=$5 RETURNING *', [venta_id, producto_id, precio_unitario, cantidad,id])
         return result.rows[0]
     } catch (error) {
         throw error; 

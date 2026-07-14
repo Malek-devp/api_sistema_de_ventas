@@ -22,7 +22,6 @@ export async function postVentasDB(id_usuario: number): Promise<Ventas> {
 export async function putVentasDB(id: number): Promise<AnularVentaResponse> {
     const client = await pool.connect();
     try {
-
         await client.query('BEGIN');
 
         // 1. Verificar si la venta ya está anulada para no duplicar el stock por error
