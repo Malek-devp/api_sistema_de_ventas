@@ -6,7 +6,7 @@ import cors from 'cors'
 
 dotenv.config({ path: './src/.env' });
 
-import usuariosRoutes from './routes/usuarios.routes.js';
+import usuariosRoutes from './routes/usuarios.routes.ts';
 import rolesRoutes from './routes/roles.routes.js';
 import productosRoutes from './routes/productos.routes.ts';
 import ventasRoutes from './routes/ventas.routes.js'

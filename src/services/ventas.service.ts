@@ -1,6 +1,7 @@
 import pool from '../database/db.js';
+import type { Ventas, AnularVentaResponse } from '../interface/venta.interface.js'
 
-export async function getVentasDB() {
+export async function getVentasDB(): Promise<Ventas[]> {
     try {
         const result = await pool.query('SELECT * FROM ventas');
         return result.rows;
@@ -9,7 +10,7 @@ export async function getVentasDB() {
     }
 }
 
-export async function postVentasDB(id_usuario) {
+export async function postVentasDB(id_usuario: number): Promise<Ventas> {
     try {
         const result = await pool.query('INSERT INTO ventas(id_usuario) VALUES($1) RETURNING *', [id_usuario]);
         return result.rows[0];
@@ -18,9 +19,10 @@ export async function postVentasDB(id_usuario) {
     }
 }
 
-export async function putVentasDB(id) {
+export async function putVentasDB(id: number): Promise<AnularVentaResponse> {
     const client = await pool.connect();
     try {
+
         await client.query('BEGIN');
 
         // 1. Verificar si la venta ya está anulada para no duplicar el stock por error
@@ -58,13 +60,13 @@ export async function putVentasDB(id) {
 
         // 5. Si todo salió bien, guardamos los cambios definitivamente
         await client.query('COMMIT');
-        return({ ok: true, msg: 'Venta anulada y stock devuelto con éxito.' });
+        return ({ ok: true, msg: 'Venta anulada y stock devuelto con éxito.' });
 
     } catch (error) {
         // Si algo falla, deshacemos todo (¡el stock no se devuelve dos veces!)
         await client.query('ROLLBACK');
         console.error('Error al anular venta (ROLLBACK):', error.message);
-        return({ ok: false, msg: error.message });
+        return ({ ok: false, msg: error.message });
 
     } finally {
         client.release();
