@@ -4,11 +4,13 @@ import morgan from 'morgan';
 import dotenv from 'dotenv';
 import cors from 'cors'
 
+import type {Request, Response, NextFunction,Errback} from 'express'
+
 dotenv.config({ path: './src/.env' });
 
-import usuariosRoutes from './routes/usuarios.routes.ts';
-import rolesRoutes from './routes/roles.routes.ts';
-import productosRoutes from './routes/productos.routes.ts';
+import usuariosRoutes from './routes/usuarios.routes.js';
+import rolesRoutes from './routes/roles.routes.js';
+import productosRoutes from './routes/productos.routes.js';
 import ventasRoutes from './routes/ventas.routes.js'
 import detalleVentasRoutes from './routes/detalleVentas.routes.js'
 
@@ -30,15 +32,19 @@ app.use('/ventas', ventasRoutes)
 app.use('/detalle', detalleVentasRoutes)
 
 // 3. Middleware para capturar rutas no encontradas (404)
-app.use((req, res) => {
+app.use((req:Request, res:Response) => {
     res.status(404).json({
         status: 'error',
         message: `No se encontró la ruta: ${req.originalUrl}`
     });
 });
 
+interface HttpError extends Error {
+    status?: number;
+}
+
 // 4. Middleware global de manejo de errores (500)
-app.use((err, req, res, next) => {
+app.use((err:HttpError, req:Request, res:Response, next:NextFunction) => {
     console.error('💥 ERROR INTERNO:', err.stack);
     res.status(err.status || 500).json({
         status: 'error',
