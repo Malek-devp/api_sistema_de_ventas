@@ -5,24 +5,30 @@ services:
     ports:
       - "2203:2203"
     volumes:
-     -.:/app
+     - .:/app
      - /app/node_modules
-    enviroment:
+    environment:
       NODE_ENV: development
+      DB_HOST: postgres
+      DB_PORT: 5432
+      DB_USER: postgres
+      DB_PASSWORD: malek2003
+      DB_DATABASE: api_sistema_de_ventas
     depends_on:
       - postgres
     
   postgres:
-    image: postgres:13-alpine
+    image: postgres:latest
     container_name: postgres_db
     ports:
       - "5432:5432"
-    enviroment:
+    environment:
       POSTGRES_DB: api_sistema_de_ventas
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: malek2003
     volumes:
-      - postgres_data:/var/lib/postgresql/data
+      - postgres_data:/var/lib/postgresql
+      - C:/Users/HP/Documents/respaldo.sql:/docker-entrypoint-initdb.d/respaldo.sql
     
   pgadmin:
    image: dpage/pgadmin4
