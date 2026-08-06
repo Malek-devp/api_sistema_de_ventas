@@ -1,10 +1,8 @@
 import pool from "../database/db.js";
+
 import type { Usuario } from '../interface/usuario.interface.js'
 
 export class UsuariosRepository {
-    
-    constructor() {}
-
     async findAll(): Promise<Usuario[] | undefined> {
         try {
             const data = await pool.query(
@@ -33,7 +31,7 @@ export class UsuariosRepository {
             return undefined;
         }
     }
-    
+
     async findById(id: number): Promise<Usuario | undefined> {
         try {
             const data = await pool.query(

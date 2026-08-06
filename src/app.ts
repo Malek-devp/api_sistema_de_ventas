@@ -3,8 +3,8 @@ import cookieParser from 'cookie-parser';
 import morgan from 'morgan';
 import dotenv from 'dotenv';
 import cors from 'cors'
-
 import type {Request, Response, NextFunction,Errback} from 'express'
+
 
 dotenv.config({ path: './src/.env' });
 
@@ -13,6 +13,14 @@ import rolesRoutes from './routes/roles.routes.js';
 import productosRoutes from './routes/productos.routes.js';
 import ventasRoutes from './routes/ventas.routes.js'
 import detalleVentasRoutes from './routes/detalleVentas.routes.js'
+
+import { UsuariosService } from './services/usuarios.service.js';
+import { UsuariosRepository } from './repositories/usuarios.repository.js';
+import { UsuariosController } from './controllers/usuarios.controller.js';
+
+const usuariosRepository = new UsuariosRepository();
+const usuariosService = new UsuariosService(usuariosRepository);
+const usuariosController = new UsuariosController(usuariosService);
 
 const app = express();
 
@@ -30,6 +38,8 @@ app.use('/roles', rolesRoutes); // rutas de roles
 app.use('/productos', productosRoutes); // rutas de productos
 app.use('/ventas', ventasRoutes)
 app.use('/detalle', detalleVentasRoutes)
+
+
 
 // 3. Middleware para capturar rutas no encontradas (404)
 app.use((req:Request, res:Response) => {
