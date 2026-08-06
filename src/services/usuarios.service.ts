@@ -1,3 +1,6 @@
+import jwt from 'jsonwebtoken';
+import type {UsuariosRepository} from '../repositories/usuarios.repository.js'
+
 export class UsuariosService {
 
     constructor(private repository: UsuariosRepository){}
@@ -47,6 +50,33 @@ export class UsuariosService {
             return this.repository.delete(id)
         } catch (error) {
             throw new Error(`Error al eliminar el usuario: ${error}`)
+        }
+    }
+
+    async login(dni:string){
+        try {
+            const data = await this.repository.findByDni(dni)
+            if(!data){
+                throw new Error(`Usuario no encontrado`)
+            }
+            const jwtSecret = process.env.JWT_SECRET;
+            if (!jwtSecret) {
+                throw new Error(`Configuración del servidor incompleta`);
+            }
+            const token = jwt.sign(
+                {
+                    id: data.id,
+                    nombre: data.nombre, 
+                    rol: data.id_rol
+                },
+                jwtSecret,
+                {
+                    expiresIn: '1h'
+                }
+            );
+            return token
+        } catch (error) {
+            throw new Error(`Lo sentimos ocurrio un erro: ${error}`)
         }
     }
 }

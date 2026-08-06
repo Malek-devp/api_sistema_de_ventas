@@ -47,11 +47,11 @@ export class UsuariosRepository {
         }
     }
 
-    async create(usuario: Usuario): Promise<Usuario | undefined> {
+    async create(nombre: string, dni: string, id_rol:number): Promise<Usuario | undefined> {
         try {
             const data = await pool.query(
                 `INSERT INTO usuarios (nombre, dni, id_rol) VALUES ($1, $2, $3) RETURNING *`,
-                [usuario.nombre, usuario.dni, usuario.id_rol]
+                [nombre, dni, id_rol]
             );
             return data.rows[0] ?? undefined;
         } catch (error) {
@@ -60,11 +60,11 @@ export class UsuariosRepository {
         }
     }
 
-    async update(id: number, usuario: Usuario): Promise<Usuario | undefined> {
+    async update(id: number, nombre: string, dni: string, id_rol:number): Promise<Usuario | undefined> {
         try {
             const data = await pool.query(
                 `UPDATE usuarios SET nombre = $1, dni = $2, id_rol = $3 WHERE id = $4 RETURNING *`,
-                [usuario.nombre, usuario.dni, usuario.id_rol, id]
+                [nombre, dni, id_rol, id]
             );
             return data.rows[0] ?? undefined;
         } catch (error) {
