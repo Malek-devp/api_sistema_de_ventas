@@ -14,6 +14,8 @@ import productosRoutes from './routes/productos.routes.js';
 import ventasRoutes from './routes/ventas.routes.js'
 import detalleVentasRoutes from './routes/detalleVentas.routes.js'
 
+// Dependencias -------------------------------------------------------------
+
 import { UsuariosService } from './services/usuarios.service.js';
 import { UsuariosRepository } from './repositories/usuarios.repository.js';
 import { UsuariosController } from './controllers/usuarios.controller.js';
@@ -21,6 +23,8 @@ import { UsuariosController } from './controllers/usuarios.controller.js';
 const usuariosRepository = new UsuariosRepository();
 const usuariosService = new UsuariosService(usuariosRepository);
 const usuariosController = new UsuariosController(usuariosService);
+
+// ---------------------------------------------------------------------------
 
 const app = express();
 

@@ -1,44 +1,42 @@
-import pool from '../database/db.js';
-import type {Producto,  CrearProducto} from '../interface/productos.interface.js'
+import type { ProductosRepository } from '../repositories/productos.repository.js'
+import type { CrearProducto } from '../interface/productos.interface.js'
 
-export async function getProductosDB():Promise<Producto[]> {
-    try {
-        const result = await pool.query(
-            `SELECT p.*, c.nombre AS categoria_nombre
-             FROM productos p
-             INNER JOIN categorias c ON p.id_categoria = c.id`
-        );
-        return result.rows;
-    } catch (error) {
-        throw new Error(`Error al obtener los productos: ${error}`);
+export class ProductosService {
+    constructor(private repository: ProductosRepository) { }
+
+    async findAllProductos() {
+        try {
+            const result = this.repository.findAllProductos();
+            return result;
+        } catch (error) {
+            throw new Error(`Error al obtener los productos: ${error}`);
+        }
     }
-}
-
-export async function postProductosDB(producto:CrearProducto):Promise<Producto> {
-    try {
-        const {marca, precio, stock, id_categoria} = producto;
-        const result = await pool.query('INSERT INTO productos(marca, precio, stock, id_categoria) VALUES($1, $2, $3, $4) RETURNING *', [marca, precio, stock, id_categoria]);
-        return result.rows[0];
-    } catch (error) {
-        throw new Error(`Error al crear el producto: ${error}`);
+ 
+    async create(producto:CrearProducto){
+        try {
+            const result = this.repository.create(producto)
+            return result
+        } catch (error) {
+            throw new Error(`Error al crear el producto: ${error}`);
+        } 
     }
-}  
 
-export async function putProductosDB(id:number, producto:CrearProducto):Promise<Producto | null> {
-    try {
-        const {marca, precio, stock, id_categoria} = producto;
-        const result = await pool.query('UPDATE productos SET marca = $1, precio = $2, stock = $3, id_categoria = $4 WHERE id = $5 RETURNING *', [marca, precio, stock, id_categoria, id]);
-        return result.rows[0];
-    } catch (error) {
-        throw new Error(`Error al actualizar el producto: ${error}`);
+    async update(id: number, producto: CrearProducto){
+        try{
+            const result = this.repository.update(id, producto);
+            return result;
+        }catch(error){
+            throw new Error(`Error al actualizar el producto: ${error}`);
+        }
     }
-}
 
-export async function deleteProductosDB(id:number):Promise<Producto | null> {
-    try {
-        const result = await pool.query('DELETE FROM productos WHERE id = $1 RETURNING *', [id]);
-        return result.rows[0];
-    } catch (error) {
-        throw new Error(`Error al eliminar el producto: ${error}`);
+    async delete(id:number){
+        try{
+            const result = this.repository.delete(id)
+            return result
+        }catch(error){
+            throw new Error(`Error al eliminar el producto: ${error}`)
+        }
     }
 }
