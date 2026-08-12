@@ -28,6 +28,7 @@ El sistema permite administrar usuarios, productos, categorías, ventas e invent
 - CRUD de Usuarios
 - CRUD de Roles
 - CRUD de Productos
+- Inyección de Dependencias
 - Registro de Ventas
 - Registro de Detalle de Ventas
 - Descuento automático de Stock
