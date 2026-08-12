@@ -89,7 +89,10 @@ El proyecto sigue una **arquitectura por capas**, separando cada responsabilidad
                                     Services
                                         │
                                         ▼
-                                  PostgreSQL
+                                    Repistory
+                                        │
+                                        ▼
+                                        DB
 ```
 
 ### Flujo de una petición
@@ -123,6 +126,10 @@ Controller
 ↓
 
 Service
+
+↓
+
+Repository
 
 ↓
 
