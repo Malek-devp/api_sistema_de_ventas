@@ -20,9 +20,17 @@ import { UsuariosService } from './services/usuarios.service.js';
 import { UsuariosRepository } from './repositories/usuarios.repository.js';
 import { UsuariosController } from './controllers/usuarios.controller.js';
 
+import {ProductosController} from './controllers/productos.controller.js'
+import {ProductosService} from './services/productos.service.js'
+import {ProductosRepository} from './repositories/productos.repository.js'
+
 const usuariosRepository = new UsuariosRepository();
 const usuariosService = new UsuariosService(usuariosRepository);
 const usuariosController = new UsuariosController(usuariosService);
+
+const productosRepository = new ProductosRepository();
+const productosService = new ProductosService(productosRepository);
+const productosController = new ProductosController(productosService);
 
 // ---------------------------------------------------------------------------
 
