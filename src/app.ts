@@ -24,13 +24,31 @@ import {ProductosController} from './controllers/productos.controller.js'
 import {ProductosService} from './services/productos.service.js'
 import {ProductosRepository} from './repositories/productos.repository.js'
 
-const usuariosRepository = new UsuariosRepository();
+import { VentasController } from './controllers/ventas.controller.js';
+import { VentasService } from './services/ventas.service.js';
+import { VentasRepository } from './repositories/ventas.repository.js';
+
+import { DetalleVentasController } from './controllers/detalleVentas.controller.js';
+import { DetalleVentasService } from './services/detalleVentas.service.js';
+import { DetalleVentasRepository } from './repositories/detalleventas.repository.js';
+
+import {UsuariosRepositoryMock} from './mock/Usuario.repository.mock.js'
+
+const usuariosRepository = new UsuariosRepositoryMock();
 const usuariosService = new UsuariosService(usuariosRepository);
 const usuariosController = new UsuariosController(usuariosService);
 
 const productosRepository = new ProductosRepository();
 const productosService = new ProductosService(productosRepository);
 const productosController = new ProductosController(productosService);
+
+const ventasRepository = new VentasRepository();
+const ventasService = new VentasService(ventasRepository);
+const ventasController = new VentasController(ventasService);
+
+const detalleVentasRepository = new DetalleVentasRepository();
+const detalleVentasService = new DetalleVentasService(detalleVentasRepository);
+const detalleVentasController = new DetalleVentasController(detalleVentasService);
 
 // ---------------------------------------------------------------------------
 

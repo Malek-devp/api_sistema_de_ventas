@@ -1,9 +1,9 @@
 import jwt from 'jsonwebtoken';
-import type {UsuariosRepository} from '../repositories/usuarios.repository.js'
+import type {IUsuarioRepository} from '../interface/usuario.interface.repositori.js'
 
 export class UsuariosService {
 
-    constructor(private repository: UsuariosRepository){}
+    constructor(private repository: IUsuarioRepository){}
 
     async findAll(){
         try {

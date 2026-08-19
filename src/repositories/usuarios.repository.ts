@@ -1,9 +1,10 @@
 import pool from "../database/db.js";
 
 import type { Usuario } from '../interface/usuario.interface.js'
+import type { IUsuarioRepository } from '../interface/usuario.interface.repositori.js' 
 
-export class UsuariosRepository {
-    async findAll(): Promise<Usuario[] | undefined> {
+export class UsuariosRepository implements IUsuarioRepository {
+    async findAll(): Promise<Usuario[]> {
         try {
             const data = await pool.query(
                 `SELECT u.*, r.cargo AS rol_cargo
@@ -13,7 +14,7 @@ export class UsuariosRepository {
             return data.rows;
         } catch (error) {
             console.error('Error al obtener los usuarios:', error);
-            return undefined;
+            return [];
         }
     }
 
